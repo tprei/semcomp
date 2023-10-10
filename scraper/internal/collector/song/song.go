@@ -18,6 +18,8 @@ type Song struct {
 	Title  string `json:"title"`
 	Artist string `json:"artist"`
 	Lyrics `json:"lyrics"`
+	Avatar string `json:"img"`
+	Views  string `json:"views"`
 }
 
 func parseArtistName(document *goquery.Document) string {
@@ -27,6 +29,17 @@ func parseArtistName(document *goquery.Document) string {
 func parseSongTitle(document *goquery.Document) string {
 	title := document.Find("h2.head-subtitle").Text()
 	return strings.TrimSpace(title)
+}
+
+func parseArtistAvatar(document *goquery.Document) string {
+	const defaultAvatarIcon = "https://akamai.sscdn.co/letras/desktop/static/img/ic_placeholder_artist.svg"
+	icon := document.Find("img.head-image").AttrOr("src", defaultAvatarIcon)
+	return strings.TrimSpace(icon)
+}
+
+func parseSongViews(document *goquery.Document) string {
+	views := document.Find("div.head-info-exib > b").Text()
+	return strings.TrimSpace(views)
 }
 
 func parseLyrics(document *goquery.Document) (lyrics Lyrics, err error) {
@@ -68,6 +81,8 @@ func FetchSong(ctx context.Context, URL string) func(context.Context) (any, erro
 
 		artist := parseArtistName(doc)
 		songTitle := parseSongTitle(doc)
+		avatar := parseArtistAvatar(doc)
+		views := parseSongViews(doc)
 
 		if artist == "" || songTitle == "" {
 			log.Warnf("got empty artist or song name in URL %s", URL)
@@ -82,6 +97,8 @@ func FetchSong(ctx context.Context, URL string) func(context.Context) (any, erro
 			Title:  songTitle,
 			Artist: artist,
 			Lyrics: lyrics,
+			Avatar: avatar,
+			Views:  views,
 		}, nil
 	}
 }
