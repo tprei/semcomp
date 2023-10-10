@@ -8,20 +8,16 @@ type Strophe struct{}
 
 const songsFile = `songs.json`
 
-func parseSongMap(map[string]string) []Song {
-	return nil
-}
-
 func filterSongs(songs []Song, query string) []Song {
 	return nil
 }
 
 func Search(query string) ([]Song, error) {
-	songsMap, err := json.ReadSongs(songsFile)
+	songs := make([]Song, 0)
+	err := json.ReadSongs(songsFile, &songs)
 	if err != nil {
 		return nil, err
 	}
 
-	songs := parseSongMap(songsMap)
 	return filterSongs(songs, query), nil
 }

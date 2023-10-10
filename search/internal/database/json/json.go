@@ -5,17 +5,18 @@ import (
 	"os"
 )
 
-// ReadSongs takes a JSON filename, parses it and returns it as a map[string]string
-func ReadSongs(filename string) (map[string]string, error) {
+// ReadSongs takes a JSON filename, parses it and unmarshalls it onto obj
+//
+// obj must be of type pointer, otherwise this functon returns InvalidUnmarshalError
+func ReadSongs(filename string, obj any) error {
 	bytes, err := os.ReadFile(filename)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	var songs map[string]string
-	if err := json.Unmarshal(bytes, &songs); err != nil {
-		return nil, err
+	if err := json.Unmarshal(bytes, obj); err != nil {
+		return err
 	}
 
-	return songs, nil
+	return nil
 }
