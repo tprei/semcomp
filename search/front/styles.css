@@ -1,22 +1,36 @@
 body {
     background-color: #191414;
     color: #FFFFFF;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Roboto', sans-serif;
     text-align: center;
-    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 .container {
     background-color: #191414;
     color: #FFFFFF;
-    border: 1px solid #FFFFFF;
-    border-radius: 10px;
     padding: 1rem;
+    max-width: 50%; /* Set container width to 50% of the page */
+    width: 100%;
+    text-align: center; /* Center text in the container */
 }
 
-h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+.title {
+    font-family: 'Young Serif', serif;
+    font-size: 4rem; /* Set the title font size to 3.5rem */
+
+    margin-bottom: 2rem;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem; /* Add space between title and search bar */
 }
 
 .search-bar {
@@ -24,6 +38,8 @@ h1 {
     justify-content: center;
     align-items: center;
     margin-bottom: 1rem;
+    width: 70%; /* Set the search bar width to 70% of the container */
+    
 }
 
 input {
@@ -33,22 +49,25 @@ input {
     border: none;
     border-radius: 5px;
     flex: 1;
-}
-
-button {
-    background-color: #1DB954;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 5px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    margin-left: 1rem;
+    font-size: 1.5em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    outline: none; /* Remove the outline style when the input is selected */
 }
 
 ul {
     list-style: none;
     padding: 0;
     text-align: left;
+    width: 70%; /* Match the list width to the search bar width */
+    margin: 0 auto; /* Center the list horizontally */
+
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease; /* Add a transition for smooth animation */
 }
 
 li {
@@ -57,4 +76,20 @@ li {
     margin: 0.5rem 0;
     padding: 0.5rem;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center text horizontally */
+}
+
+li img {
+    width: 50px; /* Set the width of the avatar image */
+    height: 50px; /* Set the height of the avatar image */
+    border-radius: 50%; /* Make the avatar image round */
+    margin-right: 10px; /* Add space between the avatar and text */
+}
+
+li p {
+    font-weight: bold; /* Make the text bold */
+    font-size: 18px; /* Adjust the font size as needed */
+    margin: 0; /* Remove default margins for the text */
 }
