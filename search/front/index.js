@@ -36,9 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Mock data for testing
         const data = [
-            { artist: "Artist 1", title: "Song 1", img: "https://akamai.sscdn.co/letras/desktop/static/img/ic_placeholder_artist.svg" },
-            { artist: "Artist 2", title: "Song 2", img: "https://akamai.sscdn.co/letras/desktop/static/img/ic_placeholder_artist.svg" },
+            { artist: "Artist 1", title: "Song 1", img: "https://akamai.sscdn.co/letras/desktop/static/img/ic_placeholder_artist.svg", views: "12345" },
+            { artist: "Artist 2", title: "Song 2", img: "https://akamai.sscdn.co/letras/desktop/static/img/ic_placeholder_artist.svg", views: "67890" },
         ];
+
 
 
         updateResults(data);
@@ -76,15 +77,37 @@ document.addEventListener("DOMContentLoaded", () => {
             // Populate the results
             data.slice(0, 10).forEach(result => {
                 const listItem = document.createElement("li");
+
+                const divItem = document.createElement("div");
+                divItem.className = "avatar"
+
                 const avatar = document.createElement("img");
                 avatar.src = result.img;
                 avatar.width = 50;
                 avatar.height = 50;
-                listItem.appendChild(avatar);
 
                 const text = document.createElement("p");
                 text.innerText = `${result.artist} - ${result.title}`;
-                listItem.appendChild(text);
+
+                divItem.appendChild(avatar);
+                divItem.appendChild(text);
+
+                listItem.appendChild(divItem);
+
+                const viewsContainer = document.createElement("div");
+                viewsContainer.className = "viewcount"
+
+                const viewsText = document.createElement("p");
+                viewsText.innerText = result.views;
+                viewsContainer.appendChild(viewsText);
+
+                const viewsIcon = document.createElement("img");
+                viewsIcon.src = "assets/eye.svg";
+                viewsIcon.style.maxHeight = 5;
+                viewsIcon.style.maxWidth = 5;
+                viewsContainer.appendChild(viewsIcon);
+
+                listItem.appendChild(viewsContainer);
 
                 list.appendChild(listItem);
             });
@@ -93,4 +116,5 @@ document.addEventListener("DOMContentLoaded", () => {
         // Set the max-height to the actual scroll height for animation
         list.style.maxHeight = list.scrollHeight + "px";
     }
+
 });

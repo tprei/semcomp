@@ -14,15 +14,16 @@ body {
     background-color: #191414;
     color: #FFFFFF;
     padding: 1rem;
-    max-width: 50%; /* Set container width to 50% of the page */
+    max-width: 80%; /* Set container width to 80% of the page for responsiveness */
     width: 100%;
     text-align: center; /* Center text in the container */
+
+    max-width: 70%;
 }
 
 .title {
     font-family: 'Young Serif', serif;
-    font-size: 4rem; /* Set the title font size to 3.5rem */
-
+    font-size: 4rem; /* Set the title font size to 3rem for responsiveness */
     margin-bottom: 2rem;
 }
 
@@ -38,8 +39,7 @@ body {
     justify-content: center;
     align-items: center;
     margin-bottom: 1rem;
-    width: 70%; /* Set the search bar width to 70% of the container */
-    
+    width: 80%; /* Set the search bar width to 80% of the container for responsiveness */
 }
 
 input {
@@ -49,9 +49,9 @@ input {
     border: none;
     border-radius: 5px;
     flex: 1;
-    font-size: 1.5em;
-    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem; /* Set a font size for readability on small screens */
     font-weight: bold;
+    font-family: 'Roboto', sans-serif;
     outline: none; /* Remove the outline style when the input is selected */
 }
 
@@ -59,7 +59,7 @@ ul {
     list-style: none;
     padding: 0;
     text-align: left;
-    width: 70%; /* Match the list width to the search bar width */
+    width: 80%; /* Match the list width to the search bar width for responsiveness */
     margin: 0 auto; /* Center the list horizontally */
 
     font-family: 'Roboto', sans-serif;
@@ -78,7 +78,7 @@ li {
     border-radius: 5px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Center text horizontally */
+    justify-content: space-between; /* Center text horizontally */
 }
 
 li img {
@@ -90,6 +90,14 @@ li img {
 
 li p {
     font-weight: bold; /* Make the text bold */
-    font-size: 18px; /* Adjust the font size as needed */
+    font-size: 1.2rem; /* Adjust the font size for responsiveness */
     margin: 0; /* Remove default margins for the text */
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    margin: 10px;
 }
