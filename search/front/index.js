@@ -2,6 +2,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("searchInput");
     const resultsList = document.getElementById("results");
 
+    const prevPageButton = document.getElementById("prevPage");
+    const nextPageButton = document.getElementById("nextPage");
+    const currentPageText = document.getElementById("currentPage");
+
+    let data = null;
+
+    let pageSize = 5;
+    let currentPage = 0; // Track the current page
+
+    function updatePagination() {
+        // Enable or disable pagination buttons based on the current page
+        prevPageButton.disabled = currentPage === 0;
+        nextPageButton.disabled = (currentPage + 1) * pageSize >= data.length;
+
+        // Update the current page indicator
+        currentPageText.textContent = `Página ${currentPage + 1}`;
+
+        updateResults();
+    }
+
+    prevPageButton.addEventListener("click", () => {
+        if (currentPage > 0) {
+            currentPage--;
+            updatePagination();
+        }
+    });
+
+    nextPageButton.addEventListener("click", () => {
+        if ((currentPage + 1) * pageSize < data.length) {
+            currentPage++;
+            updatePagination();
+        }
+    });
+
     let delayTimer;
     let errorItem = null; // Track the error message item
 
@@ -24,35 +58,38 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 500); // Delay for 500 milliseconds before making the query
     });
 
-    function queryAPI(query) {
-        if (!query) {
-            const resultsList = document.getElementById("results");
-            resultsList.replaceChildren();
-            errorItem = null;
+    async function queryAPI(query) {
+        try {
+            const response = await fetch(`http://localhost:8080/search?query=${query}`);
+            if (response.ok) {
+                data = await response.json();
+
+                // Sort the data by views in descending order
+                data.sort((a, b) => {
+                    return parseInt(b.views.replaceAll('.', '')) - parseInt(a.views.replaceAll('.', ''));
+                });
+
+                currentPage = 0; // Reset current page to 0
+                updatePagination();
+            } else {
+                data = null;
+                // Handle the error if the response is not OK (e.g., network error)
+                console.error("Error fetching data");
+            }
+        } catch (error) {
+            // Handle any other errors (e.g., JSON parsing error)
+            console.error("Error:", error);
         }
-        // Replace this with your actual API request
-        // The response should contain data in the format:
-        // [{ artist: "", title: "", img: "url_to_image" }]
-
-        // Mock data for testing
-        const data = [
-            { artist: "Artist 1", title: "Song 1", img: "https://akamai.sscdn.co/letras/desktop/static/img/ic_placeholder_artist.svg", views: "12345" },
-            { artist: "Artist 2", title: "Song 2", img: "https://akamai.sscdn.co/letras/desktop/static/img/ic_placeholder_artist.svg", views: "67890" },
-        ];
-
-
-
-        updateResults(data);
     }
 
-
-    function updateResults(data) {
+    function updateResults() {
         const list = document.getElementById("results");
 
         // Clear previous results
         list.innerHTML = "";
 
-        if (data.length === 0) {
+
+        if (!data || data.length === 0) {
             // Create a special list item for "No results were found"
             const noResultsItem = document.createElement("li");
             noResultsItem.innerText = "Puts, não achei essa! 😞";
@@ -74,8 +111,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 errorItem = null;
             }
 
-            // Populate the results
-            data.slice(0, 10).forEach(result => {
+            const start = currentPage * pageSize;
+            const end = Math.min(start + pageSize, data.length);
+
+            // Populate the results for the current page
+            for (let i = start; i < end; i++) {
+                console.log(data, start, end, i);
+                const result = data[i];
                 const listItem = document.createElement("li");
 
                 const divItem = document.createElement("div");
@@ -95,26 +137,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 listItem.appendChild(divItem);
 
                 const viewsContainer = document.createElement("div");
-                viewsContainer.className = "viewcount"
+                viewsContainer.style.display = "flex";
+                viewsContainer.style.flexDirection = "row";
+                viewsContainer.style.alignItems = "center";
+                viewsContainer.style.justifyContent = "flex-end";
+                viewsContainer.style.gap = "10px";
 
                 const viewsText = document.createElement("p");
                 viewsText.innerText = result.views;
+                viewsText.style.fontWeight = "bold";
                 viewsContainer.appendChild(viewsText);
 
                 const viewsIcon = document.createElement("img");
                 viewsIcon.src = "assets/eye.svg";
-                viewsIcon.style.maxHeight = 5;
-                viewsIcon.style.maxWidth = 5;
+                viewsIcon.style.height = '40px';
+                viewsIcon.style.width = '40px';
                 viewsContainer.appendChild(viewsIcon);
 
                 listItem.appendChild(viewsContainer);
-
                 list.appendChild(listItem);
-            });
+            }
         }
 
         // Set the max-height to the actual scroll height for animation
         list.style.maxHeight = list.scrollHeight + "px";
     }
-
 });
