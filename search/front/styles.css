@@ -63,7 +63,6 @@ ul {
     margin: 0 auto; /* Center the list horizontally */
 
     font-family: 'Roboto', sans-serif;
-    font-weight: bold;
 
     max-height: 0;
     overflow: hidden;
@@ -89,7 +88,6 @@ li img {
 }
 
 li p {
-    font-weight: bold; /* Make the text bold */
     font-size: 1.2rem; /* Adjust the font size for responsiveness */
     margin: 0; /* Remove default margins for the text */
 }

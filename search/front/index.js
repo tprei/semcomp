@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 avatar.height = 50;
 
                 const text = document.createElement("p");
-                text.innerText = `${result.artist} - ${result.title}`;
+                text.innerHTML = `<b>${result.artist}</b> - ${result.title}`;
 
                 divItem.appendChild(avatar);
                 divItem.appendChild(text);
