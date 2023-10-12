@@ -22,6 +22,17 @@ type Strophe []string
 
 const songsFile = `songs.json`
 
+func isInsideVerse(versePart []string, query []string) bool {
+	for i := range query {
+		trimmedPart := strings.Trim(versePart[i], ",.!:;")
+		if trimmedPart != query[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
 func filterSongs(songs []Song, query string) []Song {
 	filtered := make([]Song, 0, len(songs))
 
@@ -29,13 +40,24 @@ songs:
 	for _, song := range songs {
 		for _, strophes := range song.Lyrics {
 			for _, verse := range strophes {
-				lowerVerse := strings.ToLower(verse)
-				lowerQuery := strings.ToLower(query)
+				lowerVerse := strings.Split(strings.ToLower(verse), " ")
+				lowerQuery := strings.Split(strings.ToLower(query), " ")
 
-				if strings.Contains(lowerVerse, lowerQuery) {
-					filtered = append(filtered, song)
-					continue songs
+				i := 0
+				for {
+					if i+len(lowerQuery) > len(lowerVerse) {
+						break
+					}
+
+					words := lowerVerse[i : i+len(lowerQuery)]
+					if isInsideVerse(words, lowerQuery) {
+						filtered = append(filtered, song)
+						continue songs
+					}
+
+					i++
 				}
+
 			}
 		}
 	}
