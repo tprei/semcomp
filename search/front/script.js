@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let pageSize = 5;
     let currentPage = 0; // Track the current page
 
+    let query = "";
+
     function updatePagination() {
         // Enable or disable pagination buttons based on the current page
         prevPageButton.disabled = currentPage === 0;
@@ -48,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 errorItem = null;
             }
 
-            const query = searchInput.value;
+            query = searchInput.value;
             if (query) {
                 queryAPI(query);
             } else {
@@ -58,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 500); // Delay for 500 milliseconds before making the query
     });
 
-    async function queryAPI(query) {
+    async function queryAPI() {
         try {
             const response = await fetch(`http://localhost:8080/search?query=${query}`);
             if (response.ok) {
@@ -116,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Populate the results for the current page
             for (let i = start; i < end; i++) {
-                console.log(data, start, end, i);
                 const result = data[i];
                 const listItem = document.createElement("li");
 
@@ -155,8 +156,47 @@ document.addEventListener("DOMContentLoaded", () => {
                 viewsContainer.appendChild(viewsIcon);
 
                 listItem.appendChild(viewsContainer);
+
+                // get lyrics
+                let parts = "";
+                for (let l = 0; l < result.lyrics.length; l++) {
+                    for (let s = 0; s < result.lyrics[l].length; s++) {
+                        let verse = result.lyrics[l][s];
+
+                        console.log(verse, verse.toLowerCase().replace(/,!\.;\'/g, ''))
+                        if (verse.toLowerCase().replace(/,!\.;\'/g, '').replace(/&#39;/g, "'").includes(query)) {
+                            parts += verse.replace(/&#39;/g, "'") + "\n"
+                        }
+                    }
+                }
+
+                parts = parts.toLowerCase().replaceAll(query, `<b>${query}</b>`)
+
+                const lyricsContainer = document.querySelector(".lyrics-container");
+                const lyrics = document.querySelector(".lyrics");
+
+                listItem.addEventListener("mouseenter", () => {
+                    lyrics.style.display = "block";
+
+                    if (query)
+                        lyrics.innerHTML = parts;
+                });
+
+                listItem.addEventListener("mousemove", (event) => {
+                    const x = event.clientX - lyricsContainer.getBoundingClientRect().left;
+                    const y = event.clientY - lyricsContainer.getBoundingClientRect().top;
+
+                    lyrics.style.left = x + 15 + "px"; // Add an offset to avoid cursor overlap
+                    lyrics.style.top = y + 15 + "px";  // Add an offset to avoid cursor overlap
+                });
+
+                listItem.addEventListener("mouseleave", () => {
+                    lyrics.style.display = "none";
+                });
+
                 list.appendChild(listItem);
             }
+
         }
 
         // Set the max-height to the actual scroll height for animation

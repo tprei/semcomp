@@ -148,3 +148,16 @@ button:hover {
     color: #FFFFFF;
 }
 
+.lyrics-container {
+    position: relative;
+}
+
+
+.lyrics {
+    display: none;
+    position: absolute;
+    background-color: #1d1d1dc2;
+    padding: 10px;
+    border: 1px solid #000;
+    max-width: 200px; /* Set your preferred lyrics box width */
+}
