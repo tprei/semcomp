@@ -48,7 +48,7 @@ Normalmente, rodar o comando `go run` fora de um module resulta em um erro. Em u
 Mais informações sobre go workspaces podem ser lidas [aqui](https://go.dev/doc/tutorial/workspaces).
 ## Slides utilizados
 
-[Aqui estão os slides utilizados: https://t.ly/semcomp-go](https://t.ly/semcomp-go)
+[Aqui estão os slides utilizados: https://bit.ly/semcomp-go](https://bit.ly/semcomp-go)
 
 ## Contribuições
 
